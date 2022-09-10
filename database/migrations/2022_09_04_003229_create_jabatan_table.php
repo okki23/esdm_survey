@@ -13,13 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('jabatan', function (Blueprint $table) {
             $table->id();
-            $table->string('kategori')->index();
-            $table->string('id_pengajar');
-            $table->integer('id_diklat')->index();
-            $table->tinyText('kesan_pesan')->nullable();
-            $table->date('tgl_skm')->nullable();
+            $table->string('jabatan',255)->unique();
+            $table->boolean('status')->default(true);
             $table->smallInteger('created_by')->nullable()->default(1);
             $table->smallInteger('updated_by')->nullable()->default(1);
             $table->smallInteger('deleted_by')->nullable();
@@ -35,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('jabatan');
     }
 };

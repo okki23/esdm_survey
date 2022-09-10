@@ -13,13 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('diklat', function (Blueprint $table) {
             $table->id();
-            $table->string('kategori')->index();
-            $table->string('id_pengajar');
-            $table->integer('id_diklat')->index();
-            $table->tinyText('kesan_pesan')->nullable();
-            $table->date('tgl_skm')->nullable();
+            $table->string('judul_diklat');
+            $table->date('tgl_pelaksanaan_awal');
+            $table->date('tgl_pelaksanaan_selesai');
+            $table->tinyText('tempat_diklat');
+            $table->string('jenis_diklat');
             $table->smallInteger('created_by')->nullable()->default(1);
             $table->smallInteger('updated_by')->nullable()->default(1);
             $table->smallInteger('deleted_by')->nullable();
@@ -35,6 +35,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('diklat');
     }
 };

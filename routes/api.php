@@ -5,6 +5,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SubcategoryController;
+use App\Http\Controllers\JabatanController;
+use App\Http\Controllers\PengajarController;
+use App\Http\Controllers\UnitController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +29,30 @@ Route::middleware('auth')->controller(CategoryController::class)->prefix('catego
 });
 
 Route::middleware('auth')->controller(SubcategoryController::class)->prefix('subcategory')->group(function () {
+    Route::get('/', 'getList');
+    Route::get('/{id}', 'getDetail');
+    Route::post('/', 'create');
+    Route::put('/{id}', 'update');
+    Route::delete('/{id}', 'destroy');
+});
+
+Route::middleware('auth')->controller(JabatanController::class)->prefix('jabatan')->group(function () {
+    Route::get('/', 'getList');
+    Route::get('/{id}', 'getDetail');
+    Route::post('/', 'create');
+    Route::put('/{id}', 'update');
+    Route::delete('/{id}', 'destroy');
+});
+
+Route::middleware('auth')->controller(PengajarController::class)->prefix('pengajar')->group(function () {
+    Route::get('/', 'getList');
+    Route::get('/{id}', 'getDetail');
+    Route::post('/', 'create');
+    Route::put('/{id}', 'update');
+    Route::delete('/{id}', 'destroy');
+});
+
+Route::middleware('auth')->controller(UnitController::class)->prefix('unit')->group(function () {
     Route::get('/', 'getList');
     Route::get('/{id}', 'getDetail');
     Route::post('/', 'create');
