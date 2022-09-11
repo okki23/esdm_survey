@@ -8,6 +8,7 @@ use App\Http\Controllers\SubcategoryController;
 use App\Http\Controllers\JabatanController;
 use App\Http\Controllers\PengajarController;
 use App\Http\Controllers\UnitController;
+use App\Http\Controllers\DiklatController;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,6 +54,14 @@ Route::middleware('auth')->controller(PengajarController::class)->prefix('pengaj
 });
 
 Route::middleware('auth')->controller(UnitController::class)->prefix('unit')->group(function () {
+    Route::get('/', 'getList');
+    Route::get('/{id}', 'getDetail');
+    Route::post('/', 'create');
+    Route::put('/{id}', 'update');
+    Route::delete('/{id}', 'destroy');
+});
+
+Route::middleware('auth')->controller(DiklatController::class)->prefix('diklat')->group(function () {
     Route::get('/', 'getList');
     Route::get('/{id}', 'getDetail');
     Route::post('/', 'create');
