@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\ObservantTrait;
 
-class Diklat extends Model
+class JenisDiklat extends Model
 {
     use HasFactory, SoftDeletes, ObservantTrait;
 
-    protected $table = 'diklat';
+    protected $table = 'jenis_diklat';
 
     /**
      * The attributes that are mass assignable.
@@ -19,15 +19,6 @@ class Diklat extends Model
      * @var array
      */
     protected $fillable = [
-        'judul_diklat',
-        'tgl_pelaksanaan_awal',
-        'tgl_pelaksanaan_selesai',
-        'tempat_diklat',
-        'id_jenis_diklat'
+        'jenis_diklat'
     ];
-
-    public function JenisDiklat()
-    {
-        return $this->hasOne(JenisDiklat::class,'id', 'id_jenis_diklat');
-    }
 }

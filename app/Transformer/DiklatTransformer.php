@@ -14,7 +14,8 @@ class DiklatTransformer extends TransformerAbstract
             'tgl_pelaksanaan_awal' => (string) $query->tgl_pelaksanaan_awal,
             'tgl_pelaksanaan_selesai' => (string) $query->tgl_pelaksanaan_selesai,
             'tempat_diklat' => (string) $query->tempat_diklat,
-            'jenis_diklat' => (string) $query->jenis_diklat,
+            'id_jenis_diklat' => (int) $query->id_jenis_diklat,
+            'jenis_diklat' => (object) $query->jenisDiklat,
             'created_at' => (string) $query->created_at
         ];
     }

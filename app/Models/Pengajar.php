@@ -28,6 +28,6 @@ class Pengajar extends Model
 
     public function Unit()
     {
-        return $this->hasOne(Jabatan::class,'id', 'id_unit');
+        return $this->hasOne(Unit::class,'id', 'id_unit');
     }
 }

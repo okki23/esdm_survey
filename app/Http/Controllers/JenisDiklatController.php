@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use App\Models\Unit;
-use App\Transformer\UnitTransformer;
+use App\Models\JenisDiklat;
+use App\Transformer\JenisDiklatTransformer;
 use League\Fractal;
 use League\Fractal\Manager;
 use League\Fractal\Resource\Collection;
@@ -14,7 +14,7 @@ use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
 
-class UnitController extends Controller
+class JenisDiklatController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -37,18 +37,16 @@ class UnitController extends Controller
         $perPage = (int) request()->get('per_page', 10);
         $sortField = (string) request()->get('sort_field', 'id');
         $sortOrder = (string) request()->get('sort_order', 'desc');
-        $query = Unit::select('*');
-        if ($request->get('kode_unit')) {
-            $query = $query->where('kode_unit', 'like', '%'.$request->get('kode_unit').'%');
-        }
-        if ($request->get('nama_unit')) {
-            $query = $query->where('nama_unit', 'like', '%'.$request->get('nama_unit').'%');
+        $filterGroups = (array) request()->get('filterGroups', []);
+        $query = JenisDiklat::select('*');
+        if ($request->get('jenis_diklat')) {
+            $query = $query->where('jenis_diklat', 'like', '%'.$request->get('jenis_diklat').'%');
         }
         $query = $query->orderBy($sortField, $sortOrder);
         $query = $query->paginate($perPage);
         $datas = $query->getCollection();
 
-        $resource = new Collection($datas, new UnitTransformer);
+        $resource = new Collection($datas, new JenisDiklatTransformer);
         $resource->setPaginator(new IlluminatePaginatorAdapter($query));
         $res = $fractal->createData($resource)->toArray();
 
@@ -56,10 +54,10 @@ class UnitController extends Controller
     }
 
     public function getDetail($id) {
-        $data = Unit::find($id);
+        $data = JenisDiklat::find($id);
         if ($data) {
             $fractal = new Manager();
-            $resource = new Item($data, new UnitTransformer);
+            $resource = new Item($data, new JenisDiklatTransformer);
             $res = $fractal->createData($resource)->toArray();
 
             return response()->json($res, 200);
@@ -72,8 +70,7 @@ class UnitController extends Controller
     public function create(Request $request) {
         $data = $request->json()->all();
         $rule = [
-            'kode_unit' => ['required', 'unique:unit'],
-            'nama_unit' => ['required', 'unique:unit']
+            'jenis_diklat' => ['required', 'unique:jenis_diklat']
         ];
 
         $validator = Validator::make($data, $rule);
@@ -84,12 +81,12 @@ class UnitController extends Controller
             ], 400);
         }
         $input = $request->all();
-        $query = new Unit();
+        $query = new JenisDiklat();
         $query = $query->fill($input);
         $query->save();
 
         $fractal = new Manager();
-        $resource = new Item($query, new UnitTransformer);
+        $resource = new Item($query, new JenisDiklatTransformer);
         $res = $fractal->createData($resource)->toArray();
 
         return response()->json($res, 200);
@@ -98,10 +95,8 @@ class UnitController extends Controller
     public function update($id, Request $request) {
         $data = $request->json()->all();
         $rule = [
-            'kode_unit' => ['required', Rule::unique('unit')->ignore($id)],
-            'nama_unit' => ['required', Rule::unique('unit')->ignore($id)]
+            'jenis_diklat' => ['required', Rule::unique('jenis_diklat')->ignore($id)]
         ];
-
         $validator = Validator::make($data, $rule);
         if ($validator->fails()) {
             return response()->json([
@@ -109,7 +104,7 @@ class UnitController extends Controller
                 'message' => $validator->getMessageBag()->toArray()
             ], 400);
         }
-        $query = new Unit();
+        $query = new JenisDiklat();
         $query = $query->find($id);
         if ($query) {
             $input = $request->all();
@@ -117,7 +112,7 @@ class UnitController extends Controller
             $query->save();
 
             $fractal = new Manager();
-            $resource = new Item($query, new UnitTransformer);
+            $resource = new Item($query, new JenisDiklatTransformer);
             $res = $fractal->createData($resource)->toArray();
 
             return response()->json($res, 200);
@@ -127,12 +122,12 @@ class UnitController extends Controller
     }
 
     public function destroy($id, Request $request) {
-        $query = new Unit();
+        $query = new JenisDiklat();
         $query = $query->where('id', $id);
         $query = $query->delete();
-        $query_trashed = Unit::withTrashed()->find($id);
+        $query_trashed = JenisDiklat::withTrashed()->find($id);
         $fractal = new Manager();
-        $resource = new Item($query_trashed, new UnitTransformer);
+        $resource = new Item($query_trashed, new JenisDiklatTransformer);
         $res = $fractal->createData($resource)->toArray();
 
         return response()->json($res, 200);

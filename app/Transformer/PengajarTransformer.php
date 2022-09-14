@@ -13,6 +13,7 @@ class PengajarTransformer extends TransformerAbstract
             'nik' => (string) $query->nik,
             'nama_pengajar' => (string) $query->nama_pengajar,
             'kode_pengajar' => (string) $query->kode_pengajar,
+            'email' => (string) $query->email,
             'id_unit' => (int) $query->id_unit,
             'created_at' => (string) $query->created_at,
             'unit' => (object) $query->unit

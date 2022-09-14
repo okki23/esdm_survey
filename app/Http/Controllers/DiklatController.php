@@ -51,7 +51,7 @@ class DiklatController extends Controller
             $query = $query->where('tempat_diklat', 'like', '%'.$request->get('tempat_diklat').'%');
         }
         if ($request->get('jenis_diklat')) {
-            $query = $query->where('jenis_diklat', 'like', '%'.$request->get('jenis_diklat').'%');
+            $query = $query->where('jenis_diklat', '=', $request->get('jenis_diklat'));
         }
         $query = $query->orderBy($sortField, $sortOrder);
         $query = $query->paginate($perPage);
@@ -85,7 +85,7 @@ class DiklatController extends Controller
             'tgl_pelaksanaan_awal' => ['required','date'],
             'tgl_pelaksanaan_selesai' => ['required','date'],
             'tempat_diklat' => ['required'],
-            'jenis_diklat' => ['required'],
+            'id_jenis_diklat' => ['required', 'numeric'],
         ];
 
         $validator = Validator::make($data, $rule);
@@ -114,7 +114,7 @@ class DiklatController extends Controller
             'tgl_pelaksanaan_awal' => ['required','date'],
             'tgl_pelaksanaan_selesai' => ['required','date'],
             'tempat_diklat' => ['required'],
-            'jenis_diklat' => ['required'],
+            'id_jenis_diklat' => ['required', 'numeric'],
         ];
 
         $validator = Validator::make($data, $rule);
