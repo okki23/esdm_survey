@@ -10,6 +10,8 @@ use App\Http\Controllers\PengajarController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\DiklatController;
 use App\Http\Controllers\JenisDiklatController;
+use App\Http\Controllers\ScoreController;
+use App\Http\Controllers\PicController;
 
 /*
 |--------------------------------------------------------------------------
@@ -71,6 +73,22 @@ Route::middleware('auth')->controller(DiklatController::class)->prefix('diklat')
 });
 
 Route::middleware('auth')->controller(JenisDiklatController::class)->prefix('jenis_diklat')->group(function () {
+    Route::get('/', 'getList');
+    Route::get('/{id}', 'getDetail');
+    Route::post('/', 'create');
+    Route::put('/{id}', 'update');
+    Route::delete('/{id}', 'destroy');
+});
+
+Route::middleware('auth')->controller(ScoreController::class)->prefix('score')->group(function () {
+    Route::get('/', 'getList');
+    Route::get('/{id}', 'getDetail');
+    Route::post('/', 'create');
+    Route::put('/{id}', 'update');
+    Route::delete('/{id}', 'destroy');
+});
+
+Route::middleware('auth')->controller(PicController::class)->prefix('pic')->group(function () {
     Route::get('/', 'getList');
     Route::get('/{id}', 'getDetail');
     Route::post('/', 'create');
