@@ -75,8 +75,8 @@ class KategoriController extends Controller
     public function create(Request $request) {
         $data = $request->json()->all();
         $rule = [
-            'kategori' => ['kategori'],
-            'status' => ['status']
+            'kategori' => ['required'],
+            'status' => ['required']
         ];
 
         $validator = Validator::make($data, $rule);
