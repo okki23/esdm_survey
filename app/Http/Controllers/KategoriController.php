@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kategori;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use App\Models\Pic;
-use App\Transformer\PicTransformer;
+use App\Transformer\KategoriTransformer;
 use League\Fractal;
 use League\Fractal\Manager;
 use League\Fractal\Resource\Collection;
@@ -14,7 +14,7 @@ use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
 
-class PicController extends Controller
+class KategoriController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -33,25 +33,25 @@ class PicController extends Controller
      */
     public function getList(Request $request)
     {
+
         $fractal = new Manager();
         $perPage = (int) request()->get('per_page', 10);
         $sortField = (string) request()->get('sort_field', 'id');
         $sortOrder = (string) request()->get('sort_order', 'desc');
-        $query = Pic::select('*');
-        if ($request->get('nama_pic')) {
-            $query = $query->where('nama_pic', 'like', '%'.$request->get('nama_pic').'%');
+        $query = Kategori::select('*');
+        if ($request->get('kategori')) {
+            $query = $query->where('kategori', 'like', '%'.$request->get('kategori').'%');
         }
-        if ($request->get('telp')) {
-            $query = $query->where('telp', 'like', '%'.$request->get('telp').'%');
-        }
-        if ($request->get('id_unit')) {
-            $query = $query->where('id_unit', '=', $request->get('id_unit'));
+        if ($request->get('status')) {
+            $query = $query->where('status', 'like', '%'.$request->get('status').'%');
         }
         $query = $query->orderBy($sortField, $sortOrder);
         $query = $query->paginate($perPage);
         $datas = $query->getCollection();
 
-        $resource = new Collection($datas, new PicTransformer);
+        // dd($datas);
+
+        $resource = new Collection($datas, new KategoriTransformer);
         $resource->setPaginator(new IlluminatePaginatorAdapter($query));
         $res = $fractal->createData($resource)->toArray();
 
@@ -59,15 +59,15 @@ class PicController extends Controller
     }
 
     public function getDetail($id) {
-        $data = Pic::find($id);
+        $data = Kategori::find($id);
         if ($data) {
             $fractal = new Manager();
-            $resource = new Item($data, new PicTransformer);
+            $resource = new Item($data, new KategoriTransformer);
             $res = $fractal->createData($resource)->toArray();
 
             return response()->json($res, 200);
         } else {
-            
+
             return response()->json(['message' => 'Data tidak ditemukan'], 404);
         }
     }
@@ -75,25 +75,24 @@ class PicController extends Controller
     public function create(Request $request) {
         $data = $request->json()->all();
         $rule = [
-            'id_unit' => ['required'],
-            'nama_pic' => ['required'],
-            'telp' => ['required', 'numeric']
+            'kategori' => ['kategori'],
+            'status' => ['status']
         ];
 
         $validator = Validator::make($data, $rule);
         if ($validator->fails()) {
             return response()->json([
-                'success' => false, 
+                'success' => false,
                 'message' => $validator->getMessageBag()->toArray()
             ], 400);
         }
         $input = $request->all();
-        $query = new Pic();
+        $query = new Kategori();
         $query = $query->fill($input);
         $query->save();
 
         $fractal = new Manager();
-        $resource = new Item($query, new PicTransformer);
+        $resource = new Item($query, new KategoriTransformer);
         $res = $fractal->createData($resource)->toArray();
 
         return response()->json($res, 200);
@@ -102,19 +101,18 @@ class PicController extends Controller
     public function update($id, Request $request) {
         $data = $request->json()->all();
         $rule = [
-            'id_unit' => ['required'],
-            'nama_pic' => ['required'],
-            'telp' => ['required', 'numeric']
+            'kategori' => ['required'],
+            'status' => ['required']
         ];
 
         $validator = Validator::make($data, $rule);
         if ($validator->fails()) {
             return response()->json([
-                'success' => false, 
+                'success' => false,
                 'message' => $validator->getMessageBag()->toArray()
             ], 400);
         }
-        $query = new Pic();
+        $query = new Kategori();
         $query = $query->find($id);
         if ($query) {
             $input = $request->all();
@@ -122,7 +120,7 @@ class PicController extends Controller
             $query->save();
 
             $fractal = new Manager();
-            $resource = new Item($query, new PicTransformer);
+            $resource = new Item($query, new KategoriTransformer);
             $res = $fractal->createData($resource)->toArray();
 
             return response()->json($res, 200);
@@ -132,12 +130,12 @@ class PicController extends Controller
     }
 
     public function destroy($id, Request $request) {
-        $query = new Pic();
+        $query = new Kategori();
         $query = $query->where('id', $id);
         $query = $query->delete();
-        $query_trashed = Pic::withTrashed()->find($id);
+        $query_trashed = Kategori::withTrashed()->find($id);
         $fractal = new Manager();
-        $resource = new Item($query_trashed, new PicTransformer);
+        $resource = new Item($query_trashed, new KategoriTransformer);
         $res = $fractal->createData($resource)->toArray();
 
         return response()->json($res, 200);

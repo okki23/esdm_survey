@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('jabatan', function (Blueprint $table) {
+        Schema::create('kategori', function (Blueprint $table) {
             $table->id();
-            $table->string('jabatan',255)->unique();
+            $table->string('kategori');
             $table->boolean('status')->default(true);
             $table->smallInteger('created_by')->nullable()->default(1);
             $table->smallInteger('updated_by')->nullable()->default(1);
@@ -32,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('jabatan');
+        Schema::dropIfExists('kategori');
     }
 };

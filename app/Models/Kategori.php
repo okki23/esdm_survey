@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\ObservantTrait;
 
-class Unit extends Model
+class Kategori extends Model
 {
     use HasFactory, SoftDeletes, ObservantTrait;
 
-    protected $table = 'unit';
+    protected $table = 'kategori';
 
     /**
      * The attributes that are mass assignable.
@@ -19,7 +19,7 @@ class Unit extends Model
      * @var array
      */
     protected $fillable = [
-        'kode_unit',
-        'nama_unit'
+        'kategori',
+        'status'
     ];
 }
