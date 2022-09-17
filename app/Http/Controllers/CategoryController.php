@@ -62,7 +62,7 @@ class CategoryController extends Controller
 
             return response()->json($res, 200);
         } else {
-            
+
             return response()->json(['message' => 'Data tidak ditemukan'], 404);
         }
     }
@@ -70,14 +70,14 @@ class CategoryController extends Controller
     public function create(Request $request) {
         $data = $request->json()->all();
         $rule = [
-            'category_name' => ['required', 'unique:categories'],
+            'kategori' => ['required', 'unique:kategori'],
             'status' => ['required']
         ];
 
         $validator = Validator::make($data, $rule);
         if ($validator->fails()) {
             return response()->json([
-                'success' => false, 
+                'success' => false,
                 'message' => $validator->getMessageBag()->toArray()
             ], 400);
         }
@@ -96,14 +96,14 @@ class CategoryController extends Controller
     public function update($id, Request $request) {
         $data = $request->json()->all();
         $rule = [
-            'category_name' => ['required', Rule::unique('categories')->ignore($id)],
+            'kategori' => ['required', Rule::unique('categories')->ignore($id)],
             'status' => ['required']
         ];
 
         $validator = Validator::make($data, $rule);
         if ($validator->fails()) {
             return response()->json([
-                'success' => false, 
+                'success' => false,
                 'message' => $validator->getMessageBag()->toArray()
             ], 400);
         }
