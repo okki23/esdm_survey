@@ -13,6 +13,7 @@ use App\Http\Controllers\JenisDiklatController;
 use App\Http\Controllers\ScoreController;
 use App\Http\Controllers\PicController;
 use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\AspekPertanyaanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -98,6 +99,14 @@ Route::middleware('auth')->controller(PicController::class)->prefix('pic')->grou
 });
 
 Route::middleware('auth')->controller(KategoriController::class)->prefix('kategori')->group(function () {
+    Route::get('/', 'getList');
+    Route::get('/{id}', 'getDetail');
+    Route::post('/', 'create');
+    Route::put('/{id}', 'update');
+    Route::delete('/{id}', 'destroy');
+});
+
+Route::middleware('auth')->controller(AspekPertanyaanController::class)->prefix('aspek-pertanyaan')->group(function () {
     Route::get('/', 'getList');
     Route::get('/{id}', 'getDetail');
     Route::post('/', 'create');

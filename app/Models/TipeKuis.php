@@ -1,0 +1,25 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use App\ObservantTrait;
+
+class TipeKuis extends Model
+{
+    use HasFactory, SoftDeletes, ObservantTrait;
+
+    protected $table = 'tipe_kuis';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'nama_tipe',
+        'status'
+    ];
+}
