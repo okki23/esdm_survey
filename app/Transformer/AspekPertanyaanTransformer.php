@@ -14,8 +14,7 @@ class AspekPertanyaanTransformer extends TransformerAbstract
             'pertanyaan' => (string) $query->pertanyaan,
             'id_tipe_kuis' => (int) $query->id_tipe_kuis,
             'created_at' => (string) $query->created_at,
-            'kategori' => (object) $query->kategori,
-            'tipe_kuis' => (object) $query->tipeKuis
+            'kategori' => (object) $query->kategori
         ];
     }
 }

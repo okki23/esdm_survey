@@ -41,9 +41,6 @@ class AspekPertanyaanController extends Controller
         if ($request->get('id_kategori')) {
             $query = $query->where('id_kategori', '=', $request->get('id_kategori'));
         }
-        if ($request->get('id_tipe_kuis')) {
-            $query = $query->where('id_tipe_kuis', '=', $request->get('id_tipe_kuis'));
-        }
         if ($request->get('pertanyaan')) {
             $query = $query->where('pertanyaan', 'like', '%'.$request->get('pertanyaan').'%');
         }
@@ -76,8 +73,7 @@ class AspekPertanyaanController extends Controller
         $data = $request->json()->all();
         $rule = [
             'id_kategori' => ['required'],
-            'pertanyaan' => ['required'],
-            'id_tipe_kuis' => ['required']
+            'pertanyaan' => ['required']
         ];
 
         $validator = Validator::make($data, $rule);
@@ -103,8 +99,7 @@ class AspekPertanyaanController extends Controller
         $data = $request->json()->all();
         $rule = [
             'id_kategori' => ['required'],
-            'pertanyaan' => ['required'],
-            'id_tipe_kuis' => ['required']
+            'pertanyaan' => ['required']
         ];
 
         $validator = Validator::make($data, $rule);

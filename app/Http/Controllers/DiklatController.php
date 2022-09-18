@@ -50,8 +50,8 @@ class DiklatController extends Controller
         if ($request->get('tempat_diklat')) {
             $query = $query->where('tempat_diklat', 'like', '%'.$request->get('tempat_diklat').'%');
         }
-        if ($request->get('jenis_diklat')) {
-            $query = $query->where('jenis_diklat', '=', $request->get('jenis_diklat'));
+        if ($request->get('id_jenis_diklat')) {
+            $query = $query->where('id_jenis_diklat', '=', $request->get('id_jenis_diklat'));
         }
         $query = $query->orderBy($sortField, $sortOrder);
         $query = $query->paginate($perPage);
