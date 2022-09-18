@@ -95,8 +95,8 @@ class TipeKuisController extends Controller
     public function update($id, Request $request) {
         $data = $request->json()->all();
         $rule = [
-            'nama_tipe' => ['required', Rule::unique('unit')->ignore($id)],
-            'nama_unit' => ['required', Rule::unique('unit')->ignore($id)]
+            'nama_tipe' => ['required', Rule::unique('tipe_kuis')->ignore($id)],
+            'status' => ['required', 'boolean'],
         ];
 
         $validator = Validator::make($data, $rule);
