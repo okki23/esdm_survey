@@ -15,6 +15,7 @@ use App\Http\Controllers\PicController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\AspekPertanyaanController;
 use App\Http\Controllers\TipeKuisController;
+use App\Http\Controllers\TemplatePertanyaanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -116,6 +117,14 @@ Route::middleware('auth')->controller(AspekPertanyaanController::class)->prefix(
 });
 
 Route::middleware('auth')->controller(TipeKuisController::class)->prefix('tipe-kuis')->group(function () {
+    Route::get('/', 'getList');
+    Route::get('/{id}', 'getDetail');
+    Route::post('/', 'create');
+    Route::put('/{id}', 'update');
+    Route::delete('/{id}', 'destroy');
+});
+
+Route::middleware('auth')->controller(TemplatePertanyaanController::class)->prefix('template-pertanyaan')->group(function () {
     Route::get('/', 'getList');
     Route::get('/{id}', 'getDetail');
     Route::post('/', 'create');
