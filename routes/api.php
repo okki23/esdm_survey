@@ -14,6 +14,7 @@ use App\Http\Controllers\ScoreController;
 use App\Http\Controllers\PicController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\AspekPertanyaanController;
+use App\Http\Controllers\JadwalKuisController;
 use App\Http\Controllers\TipeKuisController;
 use App\Http\Controllers\TemplatePertanyaanController;
 use App\Http\Controllers\EvaluasiController;
@@ -143,6 +144,14 @@ Route::middleware('auth')->controller(TemplatePertanyaanController::class)->pref
 });
 
 Route::middleware('auth')->controller(EvaluasiController::class)->prefix('evaluasi')->group(function () {
+    Route::get('/', 'getList');
+    Route::get('/{id}', 'getDetail');
+    Route::post('/', 'create');
+    Route::put('/{id}', 'update');
+    Route::delete('/{id}', 'destroy');
+});
+
+Route::middleware('auth')->controller(JadwalKuisController::class)->prefix('jadwal-kuis')->group(function () {
     Route::get('/', 'getList');
     Route::get('/{id}', 'getDetail');
     Route::post('/', 'create');
