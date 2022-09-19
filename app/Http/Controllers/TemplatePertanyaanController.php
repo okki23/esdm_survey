@@ -40,6 +40,9 @@ class TemplatePertanyaanController extends Controller
         $sortField = (string) request()->get('sort_field', 'id');
         $sortOrder = (string) request()->get('sort_order', 'desc');
         $query = TemplatePertanyaan::select('*');
+        if ($request->get('id_kategori')) {
+            $query = $query->where('id_kategori', '=', $request->get('id_kategori'));
+        }
         if ($request->get('id_aspek_pertanyaan')) {
             $query = $query->where('id_aspek_pertanyaan', '=', $request->get('id_aspek_pertanyaan'));
         }
