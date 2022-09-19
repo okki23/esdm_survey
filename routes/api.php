@@ -13,8 +13,12 @@ use App\Http\Controllers\JenisDiklatController;
 use App\Http\Controllers\ScoreController;
 use App\Http\Controllers\PicController;
 use App\Http\Controllers\KategoriController;
+<<<<<<< HEAD
 use App\Http\Controllers\AspekPertanyaanController;
 use App\Http\Controllers\TipeKuisController;
+=======
+use App\Http\Controllers\PesertaController;
+>>>>>>> e46c35b (update peserta)
 
 /*
 |--------------------------------------------------------------------------
@@ -92,6 +96,14 @@ Route::middleware('auth')->controller(ScoreController::class)->prefix('score')->
 });
 
 Route::middleware('auth')->controller(PicController::class)->prefix('pic')->group(function () {
+    Route::get('/', 'getList');
+    Route::get('/{id}', 'getDetail');
+    Route::post('/', 'create');
+    Route::put('/{id}', 'update');
+    Route::delete('/{id}', 'destroy');
+});
+
+Route::middleware('auth')->controller(PesertaController::class)->prefix('peserta')->group(function () {
     Route::get('/', 'getList');
     Route::get('/{id}', 'getDetail');
     Route::post('/', 'create');
