@@ -39,7 +39,7 @@ class TipeKuisController extends Controller
         $sortOrder = (string) request()->get('sort_order', 'desc');
         $query = TipeKuis::select('*');
         if ($request->get('nama_tipe')) {
-            $query = $query->where('kode_unit', 'like', '%'.$request->get('kode_unit').'%');
+            $query = $query->where('nama_tipe', 'like', '%'.$request->get('nama_tipe').'%');
         }
         $query = $query->orderBy($sortField, $sortOrder);
         $query = $query->paginate($perPage);

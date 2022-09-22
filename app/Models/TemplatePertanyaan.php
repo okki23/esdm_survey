@@ -19,6 +19,7 @@ class TemplatePertanyaan extends Model
      * @var array
      */
     protected $fillable = [
+        'id_kategori',
         'id_aspek_pertanyaan',
         'id_tipe_kuis',
         'pertanyaan',

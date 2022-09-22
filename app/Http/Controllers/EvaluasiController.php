@@ -4,10 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use App\Models\TemplatePertanyaan;
-use App\Models\Addon;
-use Carbon\Carbon;
-use App\Transformer\TemplatePertanyaanTransformer;
+use App\Models\Evaluasi;
+use App\Transformer\EvaluasiTransformer;
 use League\Fractal;
 use League\Fractal\Manager;
 use League\Fractal\Resource\Collection;
@@ -16,7 +14,7 @@ use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
 
-class TemplatePertanyaanController extends Controller
+class EvaluasiController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -39,27 +37,21 @@ class TemplatePertanyaanController extends Controller
         $perPage = (int) request()->get('per_page', 10);
         $sortField = (string) request()->get('sort_field', 'id');
         $sortOrder = (string) request()->get('sort_order', 'desc');
-        $query = TemplatePertanyaan::select('*');
+        $query = Evaluasi::select('*');
         if ($request->get('id_kategori')) {
             $query = $query->where('id_kategori', '=', $request->get('id_kategori'));
         }
-        if ($request->get('id_aspek_pertanyaan')) {
-            $query = $query->where('id_aspek_pertanyaan', '=', $request->get('id_aspek_pertanyaan'));
+        if ($request->get('judul_evaluasi')) {
+            $query = $query->where('judul_evaluasi', 'like', '%'.$request->get('judul_evaluasi').'%');
         }
-        if ($request->get('pertanyaan')) {
-            $query = $query->where('pertanyaan', 'like', '%'.$request->get('pertanyaan').'%');
-        }
-        if ($request->get('id_tipe_kuis')) {
-            $query = $query->where('id_tipe_kuis', '=', $request->get('id_tipe_kuis'));
-        }
-        if ($request->get('is_required')) {
-            $query = $query->where('is_required', '=', $request->get('is_required'));
+        if ($request->get('id_diklat')) {
+            $query = $query->where('id_diklat', '=', $request->get('id_diklat'));
         }
         $query = $query->orderBy($sortField, $sortOrder);
         $query = $query->paginate($perPage);
         $datas = $query->getCollection();
 
-        $resource = new Collection($datas, new TemplatePertanyaanTransformer);
+        $resource = new Collection($datas, new EvaluasiTransformer);
         $resource->setPaginator(new IlluminatePaginatorAdapter($query));
         $res = $fractal->createData($resource)->toArray();
 
@@ -67,10 +59,10 @@ class TemplatePertanyaanController extends Controller
     }
 
     public function getDetail($id) {
-        $data = TemplatePertanyaan::find($id);
+        $data = Evaluasi::find($id);
         if ($data) {
             $fractal = new Manager();
-            $resource = new Item($data, new TemplatePertanyaanTransformer);
+            $resource = new Item($data, new EvaluasiTransformer);
             $res = $fractal->createData($resource)->toArray();
 
             return response()->json($res, 200);
@@ -83,10 +75,9 @@ class TemplatePertanyaanController extends Controller
     public function create(Request $request) {
         $data = $request->json()->all();
         $rule = [
-            'id_aspek_pertanyaan' => ['required', 'numeric'],
-            'id_tipe_kuis' => ['required', 'numeric'],
-            'pertanyaan' => ['required'],
-            'is_required' => ['boolean']
+            'id_kategori' => ['required'],
+            'judul_evaluasi' => ['required'],
+            'id_diklat' => ['required']
         ];
 
         $validator = Validator::make($data, $rule);
@@ -97,26 +88,27 @@ class TemplatePertanyaanController extends Controller
             ], 400);
         }
         $input = $request->all();
-        $query = new TemplatePertanyaan();
+        $query = new Evaluasi();
         $query = $query->fill($input);
         $query->save();
-        
-        if (isset($input['addon']) && $input['addon'] !== null) {
-            $dt_addon = [];
-            foreach ($input['addon'] as $k => $v) {
-                $dt_addon[] = [
-                    'id_template_pertanyaan' => $query->id,
-                    'addon' => $v,
-                    'created_at' => Carbon::now(),
-                    'updated_at' => Carbon::now(),
-                ];
-            }
 
-            Addon::insert($dt_addon);
-        }
+        // if (isset($input['pertanyaan']) && $input['pertanyaan'] !== null && !empty($input['pertanyaan'])) {
+        //     $dt_addon = [];
+        //     foreach ($input['pertanyaan'] as $k => $v) {
+        //         $dt_addon[] = [
+        //             'id_evaluasi_pertanyaan' => $query->id,
+        //             'id_aspek_pertanyaan' => $['id_aspek_pertanyaan'],
+        //             'id_template_pertanyaan' => $v['id_template_pertanyaan'],
+        //             'created_at' => Carbon::now(),
+        //             'updated_at' => Carbon::now(),
+        //         ];
+        //     }
+
+        //     Addon::insert($dt_addon);
+        // }
 
         $fractal = new Manager();
-        $resource = new Item($query, new TemplatePertanyaanTransformer);
+        $resource = new Item($query, new EvaluasiTransformer);
         $res = $fractal->createData($resource)->toArray();
 
         return response()->json($res, 200);
@@ -125,10 +117,9 @@ class TemplatePertanyaanController extends Controller
     public function update($id, Request $request) {
         $data = $request->json()->all();
         $rule = [
-            'id_aspek_pertanyaan' => ['required', 'numeric'],
-            'id_tipe_kuis' => ['required', 'numeric'],
-            'pertanyaan' => ['required'],
-            'is_required' => ['boolean']
+            'id_kategori' => ['required'],
+            'judul_evaluasi' => ['required'],
+            'id_diklat' => ['required']
         ];
 
         $validator = Validator::make($data, $rule);
@@ -138,30 +129,15 @@ class TemplatePertanyaanController extends Controller
                 'message' => $validator->getMessageBag()->toArray()
             ], 400);
         }
-        $query = new TemplatePertanyaan();
+        $query = new Evaluasi();
         $query = $query->find($id);
         if ($query) {
             $input = $request->all();
             $query = $query->fill($input);
             $query->save();
 
-            if (isset($input['addon']) && $input['addon'] !== null) {
-                Addon::where('id_template_pertanyaan', $id)->delete();
-                $dt_addon = [];
-                foreach ($input['addon'] as $k => $v) {
-                    $dt_addon[] = [
-                        'id_template_pertanyaan' => $query->id,
-                        'addon' => $v,
-                        'created_at' => Carbon::now(),
-                        'updated_at' => Carbon::now(),
-                    ];
-                }
-    
-                Addon::insert($dt_addon);
-            }
-
             $fractal = new Manager();
-            $resource = new Item($query, new TemplatePertanyaanTransformer);
+            $resource = new Item($query, new EvaluasiTransformer);
             $res = $fractal->createData($resource)->toArray();
 
             return response()->json($res, 200);
@@ -171,12 +147,12 @@ class TemplatePertanyaanController extends Controller
     }
 
     public function destroy($id, Request $request) {
-        $query = new TemplatePertanyaan();
+        $query = new Evaluasi();
         $query = $query->where('id', $id);
         $query = $query->delete();
-        $query_trashed = TemplatePertanyaan::withTrashed()->find($id);
+        $query_trashed = Evaluasi::withTrashed()->find($id);
         $fractal = new Manager();
-        $resource = new Item($query_trashed, new TemplatePertanyaanTransformer);
+        $resource = new Item($query_trashed, new EvaluasiTransformer);
         $res = $fractal->createData($resource)->toArray();
 
         return response()->json($res, 200);
