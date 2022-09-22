@@ -83,7 +83,7 @@ class PesertaController extends Controller
         $rule = [
             'id_unit' => ['required'],
             'nomor_peserta' => ['required'],
-            'nama_Peserta' => ['required'],
+            'nama_peserta' => ['required'],
             'email' => ['required', 'email'],
             'telp' => ['required', 'numeric']
         ];
@@ -112,7 +112,7 @@ class PesertaController extends Controller
         $rule = [
             'id_unit' => ['required'],
             'nomor_peserta' => ['required'],
-            'nama_Peserta' => ['required'],
+            'nama_peserta' => ['required'],
             'email' => ['required', 'email'],
             'telp' => ['required', 'numeric']
         ];

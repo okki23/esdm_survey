@@ -29,6 +29,6 @@ class Peserta extends Model
 
     public function Unit()
     {
-        return $this->hasOne(Unit::class,'id', 'id_unit');
+        return $this->hasOne(Unit::class,'id', 'id_unit')->select('kode_unit', 'nama_unit');
     }
 }

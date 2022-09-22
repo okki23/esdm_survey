@@ -14,7 +14,8 @@ class PesertaTransformer extends TransformerAbstract
             'nomor_peserta' => (string) $query->nomor_peserta,
             'nama_peserta' => (string) $query->nama_peserta,
             'email' => (string) $query->email,
-            'telp' => (string) $query->telp
+            'telp' => (string) $query->telp,
+            'unit' => $query->unit
         ];
     }
 }
