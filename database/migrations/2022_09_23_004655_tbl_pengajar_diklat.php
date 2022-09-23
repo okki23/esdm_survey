@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('evaluasi_pertanyaan', function (Blueprint $table) {
+
+        Schema::create('tbl_pengajar_diklat', function (Blueprint $table) {
             $table->id();
-            $table->integer('id_evaluasi_pertanyaan')->index();
-            $table->integer('id_aspek_pertanyaan')->index();
-            $table->integer('id_template_pertanyaan')->index();
+            $table->integer('id_diklat');
+            $table->integer('id_pengajar');
             $table->smallInteger('created_by')->nullable()->default(1);
             $table->smallInteger('updated_by')->nullable()->default(1);
             $table->smallInteger('deleted_by')->nullable();
@@ -33,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('evaluasi_pertanyaan');
+        Schema::dropIfExists('tbl_pengajar_diklat');
     }
 };

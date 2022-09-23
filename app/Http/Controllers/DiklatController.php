@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Models\Diklat;
+use App\Models\PengajarDiklat;
 use App\Transformer\DiklatTransformer;
 use League\Fractal;
+use Carbon\Carbon;
 use League\Fractal\Manager;
 use League\Fractal\Resource\Collection;
 use League\Fractal\Resource\Item;
@@ -37,7 +39,7 @@ class DiklatController extends Controller
         $perPage = (int) request()->get('per_page', 10);
         $sortField = (string) request()->get('sort_field', 'id');
         $sortOrder = (string) request()->get('sort_order', 'desc');
-        $query = Diklat::select('*');
+        $query = Diklat::select('*')->with('PengajarDiklat.Pengajar');
         if ($request->get('judul_diklat')) {
             $query = $query->where('judul_diklat', 'like', '%'.$request->get('judul_diklat').'%');
         }
@@ -73,7 +75,7 @@ class DiklatController extends Controller
 
             return response()->json($res, 200);
         } else {
-            
+
             return response()->json(['message' => 'Data tidak ditemukan'], 404);
         }
     }
@@ -91,7 +93,7 @@ class DiklatController extends Controller
         $validator = Validator::make($data, $rule);
         if ($validator->fails()) {
             return response()->json([
-                'success' => false, 
+                'success' => false,
                 'message' => $validator->getMessageBag()->toArray()
             ], 400);
         }
@@ -99,6 +101,22 @@ class DiklatController extends Controller
         $query = new Diklat();
         $query = $query->fill($input);
         $query->save();
+
+        //pengajar_diklat
+        if (isset($input['pengajar']) && $input['pengajar'] !== null) {
+            $dt_pengajar_diklat = [];
+            foreach ($input['pengajar'] as $k => $v) {
+                $dt_pengajar_diklat[] = [
+                    'id_pengajar' => $v,
+                    'id_diklat' => $query->id,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
+                ];
+            }
+
+            PengajarDiklat::insert($dt_pengajar_diklat);
+        }
+
 
         $fractal = new Manager();
         $resource = new Item($query, new DiklatTransformer);
@@ -120,7 +138,7 @@ class DiklatController extends Controller
         $validator = Validator::make($data, $rule);
         if ($validator->fails()) {
             return response()->json([
-                'success' => false, 
+                'success' => false,
                 'message' => $validator->getMessageBag()->toArray()
             ], 400);
         }

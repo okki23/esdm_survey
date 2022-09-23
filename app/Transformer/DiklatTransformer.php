@@ -16,7 +16,8 @@ class DiklatTransformer extends TransformerAbstract
             'tempat_diklat' => (string) $query->tempat_diklat,
             'id_jenis_diklat' => (int) $query->id_jenis_diklat,
             'jenis_diklat' => (object) $query->jenisDiklat,
-            'created_at' => (string) $query->created_at
+            'created_at' => (string) $query->created_at,
+            'pengajar_diklat' => $query->pengajarDiklat
         ];
     }
 }

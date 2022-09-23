@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\ObservantTrait;
 
-class AspekPertanyaan extends Model
+class PengajarDiklat extends Model
 {
     use HasFactory, SoftDeletes, ObservantTrait;
 
-    protected $table = 'aspek_pertanyaan';
+    protected $table = 'tbl_pengajar_diklat';
 
     /**
      * The attributes that are mass assignable.
@@ -19,18 +19,13 @@ class AspekPertanyaan extends Model
      * @var array
      */
     protected $fillable = [
-        'id_kategori',
-        'pertanyaan',
-        'id_tipe_kuis'
+        'id',
+        'id_diklat',
+        'id_pengajar'
     ];
 
-    public function Kategori()
+    public function Pengajar()
     {
-        return $this->hasOne(Kategori::class,'id', 'id_kategori');
-    }
-
-    public function TipeKuis()
-    {
-        return $this->hasOne(TipeKuis::class,'id', 'id_tipe_kuis');
+        return $this->hasOne(Pengajar::class,'id', 'id_pengajar');
     }
 }

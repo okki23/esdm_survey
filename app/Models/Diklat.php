@@ -30,4 +30,12 @@ class Diklat extends Model
     {
         return $this->hasOne(JenisDiklat::class,'id', 'id_jenis_diklat');
     }
+
+    public function PengajarDiklat()
+    {
+        return $this->hasMany(PengajarDiklat::class, 'id_pengajar');
+    }
+
+
+
 }
